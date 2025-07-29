@@ -1,3 +1,5 @@
+.env
+
 # Logs
 logs
 *.log
@@ -28,6 +30,3 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-.env
-.env.*
-node_modules/

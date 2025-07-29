@@ -17,14 +17,70 @@
         {{ error }}
       </div>
 
-      <!-- Loading -->
-      <div v-if="loading" class="text-center py-16">
-        <div class="text-6xl mb-4">⏳</div>
-        <h3 class="text-2xl font-semibold text-gray-600">{{ t('loading_products') }}</h3>
+      <!-- Skeleton Loading -->
+      <div v-if="loading && products.length === 0" class="py-16">
+        <div class="container mx-auto px-4">
+          <!-- Header skeleton -->
+          <div class="flex justify-between items-center mb-6">
+            <div class="h-8 bg-gray-200 rounded-md w-32 relative overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+            </div>
+            <div class="h-10 bg-gray-200 rounded-lg w-28 relative overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+            </div>
+          </div>
+
+          <!-- Products grid skeleton -->
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div v-for="n in 6" :key="n" 
+                class="bg-white rounded-xl border shadow-lg p-4 animate-pulse">
+              
+              <!-- Image skeleton -->
+              <div class="w-full h-40 bg-gray-200 rounded-lg mb-4 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+              </div>
+              
+              <!-- Title skeleton -->
+              <div class="h-6 bg-gray-200 rounded-md w-3/4 mb-2 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+              </div>
+              
+              <!-- Description skeleton -->
+              <div class="space-y-2 mb-3">
+                <div class="h-4 bg-gray-200 rounded-md w-full relative overflow-hidden">
+                  <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+                </div>
+                <div class="h-4 bg-gray-200 rounded-md w-2/3 relative overflow-hidden">
+                  <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+                </div>
+              </div>
+              
+              <!-- Price and stock skeleton -->
+              <div class="flex justify-between items-center mb-4">
+                <div class="h-6 bg-gray-200 rounded-md w-20 relative overflow-hidden">
+                  <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+                </div>
+                <div class="h-4 bg-gray-200 rounded-md w-16 relative overflow-hidden">
+                  <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+                </div>
+              </div>
+
+              <!-- Buttons skeleton -->
+              <div class="flex gap-2">
+                <div class="flex-1 h-8 bg-gray-200 rounded text-sm relative overflow-hidden">
+                  <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+                </div>
+                <div class="flex-1 h-8 bg-gray-200 rounded text-sm relative overflow-hidden">
+                  <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- No Products -->
-      <div v-else-if="products.length === 0" class="text-center py-16">
+      <div v-else-if="!loading && products.length === 0 && !error" class="text-center py-16">
         <div class="text-6xl mb-4">📦</div>
         <h2 class="text-3xl font-bold text-gray-600 mb-2">{{ t('no_products_yet') }}</h2>
         <p class="text-gray-500 mb-6">{{ t('start_selling') }}</p>
@@ -34,7 +90,7 @@
       </div>
 
       <!-- Products List -->
-      <div v-else>
+      <div v-else-if="products.length > 0">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-gray-800">{{ products.length }} {{ t('products') }}</h2>
           <router-link to="/sell" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg no-underline">
@@ -163,3 +219,31 @@ onMounted(() => {
   loadProducts()
 })
 </script>
+
+<style scoped>
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+</style>
